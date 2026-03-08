@@ -1,4 +1,4 @@
-import { getSkySnapshot, nakshatraSignSpan, lahiriAyanamsa, RASHIS, NAKSHATRAS } from './index.mjs';
+import { getSkySnapshot, getAscendant, nakshatraSignSpan, lahiriAyanamsa, RASHIS, NAKSHATRAS } from './index.mjs';
 
 let passed = 0;
 let failed = 0;
@@ -71,6 +71,54 @@ for (let i = 0; i < 27; i++) {
   if (nakshatraSignSpan(i).length === 2) dualCount++;
 }
 assert(dualCount === 9, `Should have 9 dual-sign nakshatras, got ${dualCount}`);
+
+// --- Test Ascendant (Lagna) ---
+
+// Basic structure test: Thrissur, Kerala
+const lagna = getAscendant({
+  date: new Date('2026-03-08T12:00:00Z'),
+  lat: 10.5276,
+  lon: 76.2144,
+});
+assert(typeof lagna.siderealLon === 'number', 'Ascendant siderealLon should be a number');
+assert(lagna.siderealLon >= 0 && lagna.siderealLon < 360, 'Ascendant lon should be 0-360');
+assert(typeof lagna.tropicalLon === 'number', 'Ascendant tropicalLon should be a number');
+assert(typeof lagna.rashi.name === 'string', 'Ascendant rashi.name should be a string');
+assert(lagna.nakshatraPada >= 1 && lagna.nakshatraPada <= 4, 'Ascendant pada should be 1-4');
+assert(typeof lagna.localSiderealTime === 'number', 'LST should be a number');
+assert(lagna.localSiderealTime >= 0 && lagna.localSiderealTime < 360, 'LST should be 0-360');
+assert(typeof lagna.ayanamsa === 'number', 'Ascendant ayanamsa should be a number');
+
+// Ascendant should differ for different locations at the same time
+const lagnaDelhi = getAscendant({
+  date: new Date('2026-03-08T12:00:00Z'),
+  lat: 28.6139,
+  lon: 77.2090,
+});
+assert(
+  Math.abs(lagna.siderealLon - lagnaDelhi.siderealLon) > 0.1,
+  'Ascendant should differ for Thrissur vs Delhi'
+);
+
+// Ascendant should differ for times 6 hours apart (moves ~90 deg)
+const lagna6h = getAscendant({
+  date: new Date('2026-03-08T18:00:00Z'),
+  lat: 10.5276,
+  lon: 76.2144,
+});
+const ascDiff = Math.abs(lagna.siderealLon - lagna6h.siderealLon);
+const ascAngular = Math.min(ascDiff, 360 - ascDiff);
+assert(ascAngular > 45, `Ascendant should shift >45 deg in 6 hours, got ${ascAngular.toFixed(1)}`);
+
+// Tropical should be ~24 deg ahead of sidereal (ayanamsa offset)
+const tropSidDiff = norm360(lagna.tropicalLon - lagna.siderealLon);
+assert(
+  Math.abs(tropSidDiff - lagna.ayanamsa) < 0.01,
+  `Tropical-sidereal gap should equal ayanamsa, got ${tropSidDiff.toFixed(4)} vs ${lagna.ayanamsa.toFixed(4)}`
+);
+
+// Helper for the test above
+function norm360(x) { return ((x % 360) + 360) % 360; }
 
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed > 0 ? 1 : 0);

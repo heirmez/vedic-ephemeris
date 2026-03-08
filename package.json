@@ -31,11 +31,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kalmanas/vedic-ephemeris.git"
+    "url": "git+https://github.com/heirmez/vedic-ephemeris.git"
   },
   "homepage": "https://kalmanas.com",
   "bugs": {
-    "url": "https://github.com/kalmanas/vedic-ephemeris/issues"
+    "url": "https://github.com/heirmez/vedic-ephemeris/issues"
   },
   "files": [
     "index.mjs",

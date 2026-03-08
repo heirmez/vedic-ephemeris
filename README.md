@@ -1,6 +1,6 @@
 # vedic-ephemeris
 
-Lightweight Vedic (sidereal) ephemeris for JavaScript. Computes real-time planetary positions using Jean Meeus algorithms with Lahiri ayanamsa. **Zero dependencies.**
+Lightweight Vedic (sidereal) ephemeris for JavaScript. Computes Ascendant (Lagna) and real-time planetary positions using Jean Meeus algorithms with Lahiri ayanamsa. **Zero dependencies.**
 
 Used in production at [Kalmanas](https://kalmanas.com) - a Vedic astrology platform.
 

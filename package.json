@@ -1,7 +1,7 @@
 {
   "name": "vedic-ephemeris",
   "version": "1.0.0",
-  "description": "Lightweight Vedic (sidereal) ephemeris - Sun, Moon & planet positions using Jean Meeus algorithms with Lahiri ayanamsa. Zero dependencies.",
+  "description": "Lightweight Vedic (sidereal) ephemeris - Ascendant (Lagna), Sun, Moon & planet positions using Jean Meeus algorithms with Lahiri ayanamsa. Zero dependencies.",
   "type": "module",
   "main": "index.mjs",
   "exports": {
@@ -21,6 +21,10 @@
     "rashi",
     "zodiac",
     "planetary",
+    "ascendant",
+    "lagna",
+    "kundli",
+    "birth-chart",
     "lahiri",
     "ayanamsa",
     "moon",
